@@ -147,7 +147,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from torch.optim.lr_scheduler import StepLR
-def trainNetwork(net, device, trainloader, testloader, EPOCHS, lr=0.2)
+def trainNetwork(net, device, train_loader, test_loader, EPOCHS, lr=0.2)
   Trainer1= Trainer()
   tester  = Test()
   model =  Net().to(device)

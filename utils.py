@@ -129,7 +129,7 @@ def plot_misclassified_images(misclassified_images, classes):
     plt.show()
 
     
- def Class_Accuracy(net, dataloader, classes, device):
+def Class_Accuracy(net, dataloader, classes, device):
     class_correct = list(0. for i in range(10))
     class_total = list(0. for i in range(10))
     with torch.no_grad():

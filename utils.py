@@ -12,6 +12,7 @@ import numpy as np
 import torch.nn as nn
 import torch.nn.init as init
 
+import numpy as np
 
 class ImageData:
     def __init__(self, train_data, test_data):
@@ -31,5 +32,5 @@ class ImageData:
 
         total_data = np.concatenate((train_data, test_data), axis=0)
         print(total_data.shape)
-        print(total_data.mean(axis=(0,1,2))/255)
-        print(total_data.std(axis=(0,1,2))/255)
+        print(total_data.mean(axis=(0,1))/255)
+        print(total_data.std(axis=(0,1))/255)

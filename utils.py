@@ -13,6 +13,7 @@ import torch.nn as nn
 import torch.nn.init as init
 import torch.nn.functional as F
 
+import cv2
 from tqdm import tqdm
 import torch.nn as nn
 import torch.optim as optim

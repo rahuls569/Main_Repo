@@ -66,6 +66,7 @@ def setup_dataloaders(trainset, testset, SEED, Batch):
   
   
   
+from tqdm import tqdm
 class Trainer:
     def __init__(self):
         self.train_losses = []
@@ -138,12 +139,26 @@ class Test:
 
         self.test_acc.append(100. * correct / len(test_loader.dataset))
         return self.misclassified_images
-
       
       
 import torch.optim as optim
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.optim.lr_scheduler import StepLR
+def trainNetwork(net, device, train_loader, test_loader, EPOCHS, lr=0.2):
+  Trainer1= Trainer()
+  tester  = Test()
+ 
+  optimizer = optim.SGD(net.parameters(), lr, momentum=0.9)
+  scheduler = StepLR(optimizer, step_size=6, gamma=0.1)
+  criterion = nn.CrossEntropyLoss()
+  EPOCHS = 25
+  for epoch in range(EPOCHS):
+    print("EPOCH:", epoch)
+    Trainer1.train(net, device, train_loader, optimizer, criterion, epoch)
+    scheduler.step()
+    tester.test(net, device, test_loader, criterion)     
+  return Trainer1, tester
 
 

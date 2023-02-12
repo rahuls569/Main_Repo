@@ -153,7 +153,7 @@ def trainNetwork(net, device, train_loader, test_loader, EPOCHS, lr=0.2):
   optimizer = optim.SGD(net.parameters(), lr, momentum=0.9)
   scheduler = StepLR(optimizer, step_size=6, gamma=0.1)
   criterion = nn.CrossEntropyLoss()
-  EPOCHS = 25
+ 
   for epoch in range(EPOCHS):
     print("EPOCH:", epoch)
     Trainer1.train(net, device, train_loader, optimizer, criterion, epoch)

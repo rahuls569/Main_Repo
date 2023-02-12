@@ -125,7 +125,7 @@ def Graph_loss_accuracy(Trainer1, tester, EPOCHS):
     
     
 def plot_misclassified_images(misclassified_images, classes):
-    fig, axs = plt.subplots(5, 2, figsize=(10,10))
+    fig, axs = plt.subplots(5, 2, figsize=(5,20))
     axs = axs.ravel()
 
     for i, (img, pred, true) in enumerate(misclassified_images[:10]):
@@ -412,7 +412,7 @@ def Grad_CAM(net, testloader, classes, device):
     
     
 def plot_classified_images(classified_images, classes):
-    fig, axs = plt.subplots(5, 2, figsize=(10,10))
+    fig, axs = plt.subplots(5, 2, figsize=(5,20))
     axs = axs.ravel()
 
     for i, (img, pred, true) in enumerate(classified_images[:10]):

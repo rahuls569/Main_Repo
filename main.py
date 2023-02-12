@@ -3,6 +3,12 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 import cv2 
+import os
+import torch.nn.functional as F
+import cv2
+
+from albumentations import Compose, PadIfNeeded, RandomCrop, Normalize, HorizontalFlip, ShiftScaleRotate, CoarseDropout, Cutout, PadIfNeeded
+from albumentations.pytorch.transforms import ToTensorV2
 
 augmentations = [A.HorizontalFlip(), A.ShiftScaleRotate(),
                  A.CoarseDropout(max_holes=1, max_height=16, max_width=16, min_holes=1, min_height=16,

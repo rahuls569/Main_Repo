@@ -48,6 +48,8 @@ class YourClass:
         self.classes = classes
         self.channel_means = channel_means
         self.channel_stdevs = channel_stdevs
+        self.channel_stdevs = torch.tensor(self.channel_stdevs)
+        self.channel_means = torch.tensor(self.channel_means)
 
     def unnormalize(self, img):
         img = img * self.channel_stdevs + self.channel_means

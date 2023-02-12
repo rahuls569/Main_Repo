@@ -12,7 +12,10 @@ def load_cifar10(root, augmentations=None):
   train_transforms = transforms.Compose([
                                     #  transforms.Resize((28, 28)),
                                    #  transforms.ColorJitter(brightness=0.10, contrast=0.1, saturation=0.10, hue=0.1),
-                                 
+                                      PadIfNeeded(40),
+                                      RandomCrop(32,32),
+                                      HorizontalFlip(),
+                                      Cutout(num_holes=1, max_h_size=16, max_w_size=16, fill_value=[0.4914*255, 0.4822*255, 0.4471*255], always_apply=True, p=1.00),
                                      transforms.ToTensor(),
                                       transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) 
                                      # Note the difference between (0.1307) and (0.1307,)

@@ -7,42 +7,46 @@ import os
 import torch.nn.functional as F
 import cv2
 
-from albumentations import Compose, PadIfNeeded, RandomCrop, Normalize, HorizontalFlip, ShiftScaleRotate, CoarseDropout, Cutout
-from albumentations.pytorch.transforms import ToTensorV2
+from albumentations import Compose, PadIfNeeded, RandomCrop, Normalize, HorizontalFlip, Cutout
 
-augmentations = [HorizontalFlip(), ShiftScaleRotate()]
+augmentations = Compose([
+    PadIfNeeded(40),
+    RandomCrop(32,32),
+    HorizontalFlip(),
+    Cutout(num_holes=1, max_h_size=16, max_w_size=16, fill_value=[0.5*255, 0.5*255, 0.5*255], always_apply=True, p=1.00),
+    Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) 
+])
 
 def load_cifar10(root, augmentations=None):
-  train_transforms = Compose([
-                                      PadIfNeeded(min_height=40, min_width=40, p=1.0, value=0),
-                                      RandomCrop(32,32),
-                                      HorizontalFlip(),
-                                      Cutout(num_holes=1, max_h_size=16, max_w_size=16, fill_value=[0.4914*255, 0.4822*255, 0.4471*255], always_apply=True, p=1.00),
-                                      ToTensorV2(),
-                                      transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)) 
-                                     ])
+    train_transforms = torchvision.transforms.Compose([
+        PadIfNeeded(40),
+        RandomCrop(32,32),
+        HorizontalFlip(),
+        Cutout(num_holes=1, max_h_size=16, max_w_size=16, fill_value=[0.5*255, 0.5*255, 0.5*255], always_apply=True, p=1.00),
+        torchvision.transforms.ToTensor(),
+        Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) 
+    ])
 
-  test_transforms = Compose([
-                                      ToTensorV2(),
-                                      transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
-                                     ])
+    test_transforms = torchvision.transforms.Compose([
+        torchvision.transforms.ToTensor(),
+        Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) 
+    ])
 
-  trainset = torchvision.datasets.CIFAR10(root=root, train=True, download=True, transform=train_transforms)
+    trainset = torchvision.datasets.CIFAR10(root=root, train=True, download=True, transform=train_transforms)
 
-  if augmentations is not None:
-      def augment(image):
-          image = torch.tensor(image).permute(2,0,1).float() / 255.
-          for aug in augmentations:
-              image = aug(image=image)["image"]
-          return image
-      trainset.transform = augment
+    if augmentations is not None:
+        def augment(image, target):
+            augmented = augmentations(image=image)
+            image = augmented['image']
+            return image, target
+
+        trainset.transform = augment
     
-  testset = torchvision.datasets.CIFAR10(root=root, train=False, download=True, transform=test_transforms)
+    testset = torchvision.datasets.CIFAR10(root=root, train=False, download=True, transform=test_transforms)
 
-  classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+    classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
-  return trainset, testset, classes
-
+    return trainset, testset, classes
 import torch
 import torchvision
 import torchvision.transforms as transforms

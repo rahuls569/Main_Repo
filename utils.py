@@ -336,7 +336,7 @@ class GradCAM:
     def __call__(self, input, class_idx=None, retain_graph=False):
         return self.forward(input, class_idx, retain_graph)
 
-def plotGradCAM(net, testloader, classes, device):
+def Grad_CAM(net, testloader, classes, device):
 
 
     net.eval()
@@ -358,7 +358,7 @@ def plotGradCAM(net, testloader, classes, device):
 
     gradcam = GradCAM.from_config(model_type='resnet', arch=net, layer_name='layer4')
 
-    fig = plt.figure(figsize=(10, 10))
+    fig = plt.figure(figsize=(5, 20))
     idx_cnt=1
     for idx in np.arange(10):
 
@@ -366,32 +366,32 @@ def plotGradCAM(net, testloader, classes, device):
         lbl = predicted_labels[idx]
         lblp = actual_labels[idx]
 
-        # get an image and normalize with mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)
+     
         img = img.unsqueeze(0).to(device)
-        org_img = denormalize(img,mean=(0.4914, 0.4822, 0.4471),std=(0.2469, 0.2433, 0.2615))
+        org_img = denormalize(img,mean=(0.5, 0.5, 0.5),std=(0.5, 0.5, 0.5))
 
         # get a GradCAM saliency map on the class index 10.
         mask, logit = gradcam(img, class_idx=lbl)
-        # make heatmap from mask and synthesize saliency map using heatmap and img
+       
         heatmap, cam_result = visualize_cam(mask, org_img, alpha=0.4)
 
         # Show images
         # for idx in np.arange(len(labels.numpy())):
         # Original picture
         
-        ax = fig.add_subplot(5, 6, idx_cnt, xticks=[], yticks=[])
+        ax = fig.add_subplot(10, 3, idx_cnt, xticks=[], yticks=[])
         npimg = np.transpose(org_img[0].cpu().numpy(),(1,2,0))
         ax.imshow(npimg, cmap='gray')
         ax.set_title(f"Label={str(classes[lblp])}\npred={classes[lbl]}")
         idx_cnt+=1
 
-        ax = fig.add_subplot(5, 6, idx_cnt, xticks=[], yticks=[])
+        ax = fig.add_subplot(10, 3, idx_cnt, xticks=[], yticks=[])
         npimg = np.transpose(heatmap,(1,2,0))
         ax.imshow(npimg, cmap='gray')
         ax.set_title("HeatMap".format(str(classes[lbl])))
         idx_cnt+=1
 
-        ax = fig.add_subplot(5, 6, idx_cnt, xticks=[], yticks=[])
+        ax = fig.add_subplot(10, 3, idx_cnt, xticks=[], yticks=[])
         npimg = np.transpose(cam_result,(1,2,0))
         ax.imshow(npimg, cmap='gray')
         ax.set_title("GradCAM".format(str(classes[lbl])))

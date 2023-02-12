@@ -34,3 +34,47 @@ class ImageData:
         print(total_data.shape)
         print(total_data.mean(axis=(0,1))/255)
         print(total_data.std(axis=(0,1))/255)
+        
+        
+import matplotlib.pyplot as plt
+import numpy as np
+import torchvision
+
+
+
+class image_show:
+    def __init__(self, train_loader, classes, channel_means, channel_stdevs):
+        self.train_loader = train_loader
+        self.classes = classes
+        self.channel_means = channel_means
+        self.channel_stdevs = channel_stdevs
+
+    def unnormalize(self, img):
+        img = img * self.channel_stdevs + self.channel_means
+        return img
+
+    def imshow(self, img):
+        npimg = self.unnormalize(img).numpy()
+        plt.figure(figsize=(20,20))  # increase size of plot
+        plt.imshow(np.transpose(npimg, (1, 2, 0)))
+
+    def display_images(self):
+        dataiter = iter(self.train_loader)
+        images, labels = next(dataiter)
+        images = images[:32]  # only display first 20 images
+        labels = labels[:32]  # only display labels for first 20 images
+
+        # display images
+        self.imshow(torchvision.utils.make_grid(images))
+
+        # print labels
+        for i in range(32):
+            print('Image %d: %s' % (i, self.classes[labels[i]]))
+
+
+        # display images
+        self.imshow(torchvision.utils.make_grid(images))
+
+        # print labels
+        for i in range(32):
+            print('Image %d: %s' % (i, self.classes[labels[i]])) 

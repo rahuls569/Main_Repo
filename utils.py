@@ -42,7 +42,7 @@ import torchvision
 
 
 
-class image_show:
+class YourClass:
     def __init__(self, train_loader, classes, channel_means, channel_stdevs):
         self.train_loader = train_loader
         self.classes = classes
@@ -69,12 +69,4 @@ class image_show:
 
         # print labels
         for i in range(32):
-            print('Image %d: %s' % (i, self.classes[labels[i]]))
-
-
-        # display images
-        self.imshow(torchvision.utils.make_grid(images))
-
-        # print labels
-        for i in range(32):
-            print('Image %d: %s' % (i, self.classes[labels[i]])) 
+            print('Image %d: %s' % (i, self. Classes[labels[i]]))

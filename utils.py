@@ -52,8 +52,8 @@ class YourClass:
         self.channel_means = torch.tensor(self.channel_means)
 
     def unnormalize(self, img):
-    img = img * self.channel_stdevs.reshape(3, 1, 1) + self.channel_means.reshape(3, 1, 1)
-    return img
+        img = img * self.channel_stdevs.reshape(3, 1, 1) + self.channel_means.reshape(3, 1, 1)
+        return img
 
     def imshow(self, img):
         npimg = self.unnormalize(img).numpy()

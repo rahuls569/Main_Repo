@@ -399,3 +399,18 @@ def Grad_CAM(net, testloader, classes, device):
 
     fig.tight_layout()  
     plt.show()
+    
+    
+    
+    
+def plot_classified_images(classified_images, classes):
+    fig, axs = plt.subplots(5, 2, figsize=(10,10))
+    axs = axs.ravel()
+
+    for i, (img, pred, true) in enumerate(classified_images[:10]):
+        img = img.permute(1, 2, 0)
+        axs[i].imshow(img.cpu().squeeze(), cmap='gray')
+        axs[i].set_title(f'Actual: {classes[true]}, Predicted: {classes[pred]}')
+        axs[i].axis('off')
+    plt.subplots_adjust(hspace=0.5)
+    plt.show()

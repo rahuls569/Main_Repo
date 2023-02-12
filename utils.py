@@ -69,4 +69,8 @@ class YourClass:
 
         # print labels
         for i in range(32):
-            print('Image %d: %s' % (i, self. Classes[labels[i]]))
+            index = labels[i].item()
+            print('Image %d: %s' % (i, self.classes[index]))
+            
+            
+

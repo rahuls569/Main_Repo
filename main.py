@@ -10,8 +10,7 @@ import cv2
 from albumentations import Compose, PadIfNeeded, RandomCrop, Normalize, HorizontalFlip, ShiftScaleRotate, CoarseDropout, Cutout
 from albumentations.pytorch.transforms import ToTensorV2
 
-augmentations = [HorizontalFlip(), ShiftScaleRotate(), CoarseDropout(max_holes=1, max_height=16, max_width=16, min_holes=1, min_height=16,
-                                 min_width=16, fill_value=(0.5, 0.5, 0.5), mask_fill_value=None)]
+augmentations = [HorizontalFlip(), ShiftScaleRotate()]
 
 def load_cifar10(root, augmentations=None):
   train_transforms = Compose([
@@ -20,12 +19,12 @@ def load_cifar10(root, augmentations=None):
                                       HorizontalFlip(),
                                       Cutout(num_holes=1, max_h_size=16, max_w_size=16, fill_value=[0.4914*255, 0.4822*255, 0.4471*255], always_apply=True, p=1.00),
                                       ToTensorV2(),
-                                      Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) 
+                                      transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)) 
                                      ])
 
   test_transforms = Compose([
                                       ToTensorV2(),
-                                      Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) 
+                                      transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
                                      ])
 
   trainset = torchvision.datasets.CIFAR10(root=root, train=True, download=True, transform=train_transforms)

@@ -160,4 +160,4 @@ def trainNetwork(net, device, trainloader, testloader, EPOCHS, lr=0.2)
     Trainer1.train(model, device, train_loader, optimizer, criterion, epoch)
     scheduler.step()
     tester.test(model, device, test_loader, criterion)     
-    return Trainer1, tester  
+  return Trainer1, tester  

@@ -110,7 +110,8 @@ class Test:
         self.test_losses = []
         self.test_acc = []
         self.misclassified_images = []
-        
+        self.classified_images = []
+
     def test(self, model, device, test_loader, criterion):
         model.eval()
         test_loss = 0
@@ -127,6 +128,8 @@ class Test:
                 for i, (p, t) in enumerate(zip(pred, target)):
                     if p != t:
                         self.misclassified_images.append((data[i], p, t))
+                    else:
+                        self.classified_images.append((data[i], p, t))
                 
                 correct += pred.eq(target.view_as(pred)).sum().item()
 
@@ -138,7 +141,7 @@ class Test:
             100. * correct / len(test_loader.dataset)))
 
         self.test_acc.append(100. * correct / len(test_loader.dataset))
-        return self.misclassified_images
+        return self.misclassified_images, self.classified_images
       
       
 import torch.optim as optim

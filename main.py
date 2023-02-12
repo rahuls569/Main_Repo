@@ -10,7 +10,7 @@ import cv2
 augmentations = [A.HorizontalFlip(), A.ShiftScaleRotate(),
                  A.CoarseDropout(max_holes=1, max_height=16, max_width=16, min_holes=1, min_height=16,
                                  min_width=16, fill_value=(0.5, 0.5, 0.5), mask_fill_value=None),
-                 A.Cutout(num_holes=1, max_h_size=16, max_w_size=16, p=1.0, fill_value=(0.5, 0.5, 0.5), mask_fill_value=None)]
+                 A.Cutout(num_holes=1, max_h_size=16, max_w_size=16, p=1.0)]
 
 def load_cifar10(root, augmentations=None):
   train_transforms = transforms.Compose([

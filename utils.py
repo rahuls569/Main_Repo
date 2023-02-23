@@ -445,19 +445,27 @@ class DataStatistics:
         
         
         
-def viz_data(cols=8, rows=5):
-  figure = plt.figure(figsize=(14, 10))
-  for i in range(1, cols * rows + 1):
-    img, label = exp[i]
+import random
+import matplotlib.pyplot as plt
 
-    figure.add_subplot(rows, cols, i)
-    plt.title(exp.classes[label])
-    plt.axis("off")
-    plt.imshow(img, cmap="gray")
+def viz_data(exp, cols=8, rows=5):
+    data = exp.get_data()
+    targets = exp.get_targets()
+    classes = exp.get_classes()
 
-  plt.tight_layout()
-  plt.show()
-    
+    figure = plt.figure(figsize=(14, 10))
+    for i in range(1, cols * rows + 1):
+        index = random.randint(0, len(data) - 1)
+        img, label = data[index], targets[index]
+
+        figure.add_subplot(rows, cols, i)
+        plt.title(classes[label])
+        plt.axis("off")
+        plt.imshow(img, cmap="gray")
+
+    plt.tight_layout()
+    plt.show()
+
     
     
     

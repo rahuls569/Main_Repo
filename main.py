@@ -165,3 +165,27 @@ def trainNetwork(net, device, train_loader, test_loader, EPOCHS, lr=0.2):
   return Trainer1, tester
 
 
+
+class CIFAR10Dataset:
+    def __init__(self, root_path):
+        self.root_path = root_path
+        self.dataset = datasets.CIFAR10(root_path, train=True, download=True)
+        self.data = self.dataset.data
+        self.targets = self.dataset.targets
+        self.classes = self.dataset.classes
+
+    def get_data(self):
+        return self.data
+
+    def get_targets(self):
+        return self.targets
+
+    def get_classes(self):
+        return self.classes
+
+
+cifar10_dataset = CIFAR10Dataset('./data')
+classes = cifar10_dataset.get_classes()
+exp_data=cifar10_dataset.get_data()
+print(classes)
+

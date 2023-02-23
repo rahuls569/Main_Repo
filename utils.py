@@ -471,26 +471,34 @@ def viz_data(exp, cols=8, rows=5):
     
     
     
-def show_images(aug_dict, ncol=6):
-  nrow = len(aug_dict)
+import numpy as np
+import matplotlib.pyplot as plt
+import albumentations as A
 
-  fig, axes = plt.subplots(ncol, nrow, figsize=( 3*nrow, 15), squeeze=False)
-  for i, (key, aug) in enumerate(aug_dict.items()):
-    for j in range(ncol):
-      ax = axes[j,i]
-      if j == 0:
-        ax.text(0.5, 0.5, key, horizontalalignment='center', verticalalignment='center', fontsize=15)
-        ax.get_xaxis().set_visible(False)
-        ax.get_yaxis().set_visible(False)
-        ax.axis('off')
-      else:
-        image, label = exp[j-1]
-        if aug is not None:
-          transform = A.Compose([aug])
-          image = np.array(image)
-          image = transform(image=image)['image']
-          
-        ax.imshow(image)
-        ax.set_title(f'{exp.classes[label]}')
-        ax.axis('off')
+def show_images(exp, aug_dict, ncol=6):
+    nrow = len(aug_dict)
+
+    fig, axes = plt.subplots(ncol, nrow, figsize=(3*nrow, 15), squeeze=False)
+    for i, (key, aug) in enumerate(aug_dict.items()):
+        for j in range(ncol):
+            ax = axes[j, i]
+            if j == 0:
+                ax.text(0.5, 0.5, key, horizontalalignment='center', verticalalignment='center', fontsize=15)
+                ax.get_xaxis().set_visible(False)
+                ax.get_yaxis().set_visible(False)
+                ax.axis('off')
+            else:
+                data = exp.get_data()
+                targets = exp.get_targets()
+                image, label = data[j-1], targets[j-1]
+                if aug is not None:
+                    transform = A.Compose([aug])
+                    image = np.array(image)
+                    image = transform(image=image)['image']
+
+                ax.imshow(image)
+                ax.set_title(f'{exp.get_classes()[label]}')
+                ax.axis('off')
+    plt.tight_layout()
+    plt.show()
 

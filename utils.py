@@ -441,11 +441,11 @@ class DataStatistics:
         
         
         
+         
         
         
         
-        
-def viz_data(cols=8, rows=5):
+def viz_data(cols=8, rows=5, exp=exp):
   figure = plt.figure(figsize=(14, 10))
   for i in range(1, cols * rows + 1):
     img, label = exp[i]

@@ -549,7 +549,7 @@ def Graph_loss_accuracy_one_cycle(history):
     
     
     
-!pip install torch_lr_finder    
+
 from torch_lr_finder import LRFinder
 
 

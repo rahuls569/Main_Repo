@@ -422,3 +422,65 @@ def plot_classified_images(classified_images, classes):
         axs[i].axis('off')
     plt.subplots_adjust(hspace=0.5)
     plt.show()
+    
+    
+    
+    
+class DataStatistics:
+    def __init__(self, data):
+        self.data = data
+
+    def print_statistics(self):
+        print('[Train]')
+        print(' - Numpy Shape:', self.data.shape)
+        print(' - min:', np.min(self.data, axis=(0,1,2)) / 255.)
+        print(' - max:', np.max(self.data, axis=(0,1,2)) / 255.)
+        print(' - mean:', np.mean(self.data, axis=(0,1,2)) / 255.)
+        print(' - std:', np.std(self.data, axis=(0,1,2)) / 255.)
+        print(' - var:', np.var(self.data, axis=(0,1,2)) / 255.)
+        
+        
+        
+        
+        
+        
+        
+def viz_data(cols=8, rows=5):
+  figure = plt.figure(figsize=(14, 10))
+  for i in range(1, cols * rows + 1):
+    img, label = exp[i]
+
+    figure.add_subplot(rows, cols, i)
+    plt.title(exp.classes[label])
+    plt.axis("off")
+    plt.imshow(img, cmap="gray")
+    
+    
+    
+    
+    
+    
+    
+def show_images(aug_dict, ncol=6):
+  nrow = len(aug_dict)
+
+  fig, axes = plt.subplots(ncol, nrow, figsize=( 3*nrow, 15), squeeze=False)
+  for i, (key, aug) in enumerate(aug_dict.items()):
+    for j in range(ncol):
+      ax = axes[j,i]
+      if j == 0:
+        ax.text(0.5, 0.5, key, horizontalalignment='center', verticalalignment='center', fontsize=15)
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+        ax.axis('off')
+      else:
+        image, label = exp[j-1]
+        if aug is not None:
+          transform = A.Compose([aug])
+          image = np.array(image)
+          image = transform(image=image)['image']
+          
+        ax.imshow(image)
+        ax.set_title(f'{exp.classes[label]}')
+        ax.axis('off')
+

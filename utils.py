@@ -454,7 +454,9 @@ def viz_data(cols=8, rows=5):
     plt.title(exp.classes[label])
     plt.axis("off")
     plt.imshow(img, cmap="gray")
-    
+
+  plt.tight_layout()
+  plt.show()
     
     
     

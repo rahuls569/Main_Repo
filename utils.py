@@ -502,3 +502,67 @@ def show_images(exp, aug_dict, ncol=6):
     plt.tight_layout()
     plt.show()
 
+    
+    
+    
+    
+    
+def Graph_loss_accuracy_one_cycle(history):
+    train_losses = history[0]
+    test_losses = history[1]
+    train_acc = history[2]
+    test_acc = history[3]
+    EPOCHS = len(train_losses)
+
+    fig, axs = plt.subplots(2, 2, figsize=(15, 12))
+
+    # Training Plot
+    axs[0,0].plot(train_losses, color='r', label='Training Loss')
+    axs[0,0].set_xlabel('Epochs')
+    axs[0,0].set_ylabel('Training Loss')
+    axs[0,0].set_title('Training Loss vs. Epochs')
+    axs[0,0].legend()
+
+    # TEST Loss Plot
+    axs[0,1].plot(test_losses, color='r', label='Test Loss')
+    axs[0,1].set_xlabel('Epochs')
+    axs[0,1].set_ylabel('Test Loss')
+    axs[0,1].set_title('Test Loss vs. Epochs')
+    axs[0,1].legend()
+
+    # TRAIN Accuracy Plot
+    axs[1,0].plot(train_acc, color='r', label='Training Accuracy')
+    axs[1,0].set_xlabel('Epochs')
+    axs[1,0].set_ylabel('Training Accuracy')
+    axs[1,0].set_title('Training Accuracy vs. Epochs')
+    axs[1,0].legend()
+
+    # TEST Accuracy Plot
+    axs[1,1].plot(test_acc, color='r', label='Test Accuracy')
+    axs[1,1].set_xlabel('Epochs')
+    axs[1,1].set_ylabel('Test Accuracy')
+    axs[1,1].set_title('Test Accuracy vs. Epochs')
+    axs[1,1].legend()
+
+    plt.show()   
+    
+    
+    
+    
+!pip install torch_lr_finder    
+from torch_lr_finder import LRFinder
+
+
+def find_lr(net, optimizer, criterion, train_loader):
+    """Find learning rate for using One Cyclic LRFinder
+    Args:
+        net (instace): torch instace of defined model
+        optimizer (instance): optimizer to be used
+        criterion (instance): criterion to be used for calculating loss
+        train_loader (instance): torch dataloader instace for trainig set
+    """
+    lr_finder = LRFinder(net, optimizer, criterion, device="cuda")
+    lr_finder.range_test(train_loader, end_lr=10, num_iter=100, step_mode="exp")
+    lr_finder.plot()
+    lr_finder.reset()
+    

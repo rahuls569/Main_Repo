@@ -184,8 +184,5 @@ class CIFAR10Dataset:
         return self.classes
 
 
-cifar10_dataset = CIFAR10Dataset('./data')
-classes = cifar10_dataset.get_classes()
-exp_data=cifar10_dataset.get_data()
-print(classes)
+
 

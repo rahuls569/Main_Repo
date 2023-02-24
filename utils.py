@@ -566,3 +566,26 @@ def find_lr(net, optimizer, criterion, train_loader):
     lr_finder.plot()
     lr_finder.reset()
     
+    
+    
+    
+    
+def tain_loader_image(dataloader, classes, cols=8, rows=5):
+    data_iter = iter(dataloader)
+    figure = plt.figure(figsize=(14, 10))
+    for i in range(1, cols * rows + 1):
+        try:
+            data, targets = next(data_iter)
+        except StopIteration:
+            data_iter = iter(dataloader)
+            data, targets = next(data_iter)
+        index = random.randint(0, data.size(0) - 1)
+        img, label = data[index], targets[index]
+
+        figure.add_subplot(rows, cols, i)
+        plt.title(classes[label])
+        plt.axis("off")
+        plt.imshow(img.squeeze().permute(1, 2, 0))
+
+    plt.tight_layout()
+    plt.show()
